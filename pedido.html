@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imprimir Pedido - SPACE BURGUER</title>
+<style>
+  body {
+    font-family: "Courier New", monospace;
+    background: #f3f3f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background: #fff;
+    padding: 15px;
+    width: 58mm;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  textarea {
+    width: 100%;
+    height: 160px;
+    margin-bottom: 10px;
+    padding: 8px;
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+  }
+
+  button {
+    width: 100%;
+    background: #e63946;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #d62828;
+  }
+
+  #printArea {
+    display: none;
+    width: 58mm;
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .center { text-align: center; }
+  .right { text-align: right; }
+  .bold { font-weight: bold; }
+  .linha { border-bottom: 1px dashed #000; margin: 4px 0; }
+  .item-row { display: flex; justify-content: space-between; }
+
+  @media print {
+    body * { visibility: hidden; }
+    #printArea, #printArea * { visibility: visible; }
+    #printArea { margin: 0; width: 58mm; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>🧾 SPACE BURGUER</h2>
+  <textarea id="mensagem" placeholder="Cole aqui a mensagem do pedido do WhatsApp..."></textarea>
+  <button onclick="gerarCupom()">Gerar & Imprimir</button>
+</div>
+
+<div id="printArea"></div>
+
+<script>
+function gerarCupom() {
+  const msg = document.getElementById('mensagem').value.trim();
+  if (!msg) return alert('Cole a mensagem do pedido primeiro!');
+
+  const linhas = msg.split('\n').map(l => l.trim()).filter(l => l);
+
+  let html = `
+  <div class="center bold">SPACE BURGUER</div>
+  <div class="center">${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString().slice(0,5)}</div>
+  <div class="linha"></div>
+  `;
+
+  let inItem = false; // indica se estamos dentro de um item (para negrito)
+
+  linhas.forEach(linha => {
+    // Cliente e endereço
+    if (linha.includes('Cliente:') || linha.includes('Endereço:') || linha.includes('Bairro:') || linha.includes('Telefone:')) {
+      html += `<div>${linha}</div>`;
+      inItem = false;
+    }
+    // Tipo de serviço e pagamento
+    else if (linha.includes('Tipo de Serviço:') || linha.includes('Forma de Pagamento:')) {
+      html += `<div>${linha}</div>`;
+      inItem = false;
+    }
+    // Produto principal (começa com quantidade)
+    else if (linha.match(/^\d+x/)) {
+      const partes = linha.split('-');
+      const item = partes[0].trim();
+      const valor = partes[1] ? partes[1].trim() : '';
+      html += `<div class="item-row"><span class="bold">${item}</span><span class="bold">${valor}</span></div>`;
+      inItem = true;
+    }
+    // Observações ou adicionais do item (herdam negrito)
+    else if (inItem && linha) {
+      html += `<div class="bold">  → ${linha}</div>`; // adiciona seta para indicar adicional
+    }
+    // Total
+    else if (linha.toUpperCase().includes('TOTAL')) {
+      html += `<div class="linha"></div><div class="center bold">${linha}</div>`;
+      inItem = false;
+    }
+    // Outros textos
+    else {
+      html += `<div>${linha}</div>`;
+      inItem = false;
+    }
+  });
+
+  html += `
+  <div class="linha"></div>
+  <div class="center">Obrigado pela preferência! ❤️</div>
+  <div class="center">www.spaceburguer.com</div>
+  `;
+
+  const printArea = document.getElementById('printArea');
+  printArea.innerHTML = html;
+  printArea.style.display = 'block';
+  window.print();
+}
+</script>
+
+</body>
+</html>
