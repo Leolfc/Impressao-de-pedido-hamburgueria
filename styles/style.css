@@ -67,8 +67,8 @@ button:hover {
   font-weight: bold;
 }
 .linha {
-  /* traço fino tracejado para separar itens (1px) */
-  display: block;
+  background-size: 6px 1px;
+  margin: 18px 0; /* espaçamento aumentado entre itens */
   height: 1px;
   background-image: repeating-linear-gradient(
     to right,
@@ -86,7 +86,13 @@ button:hover {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 4px;
+  margin-bottom: 12px; /* mais espaço entre linhas do mesmo item */
+}
+
+/* bloco que envolve cada item (linha principal + observações) */
+.item-block {
+  margin-bottom: 29px; /* espaço maior entre blocos de item */
+  padding-bottom: 4px;
 }
 .small {
   font-size: 10px;
@@ -152,4 +158,24 @@ button:hover {
   .container {
     display: none;
   }
+    /* --- espaçamentos só na impressão --- */
+  .item-block {
+    margin-bottom: 35px !important; /* espaço maior entre os produtos */
+    padding-bottom: 4px;
+  }
+
+  .item-row {
+    margin-bottom: 30px !important;
+    color: red; /* espaço entre nome e adicionais */
+  }
+
+  .small {
+    display: block;
+    margin-top: 4px !important; /* espaço acima das observações */
+  }
+
+  .linha {
+    margin: 10px 0 !important; /* aumenta a separação das linhas tracejadas */
+  }
 }
+

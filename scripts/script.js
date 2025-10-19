@@ -109,7 +109,7 @@ function gerarCupom() {
     // total / resumo
     if (linha.toUpperCase().includes("TOTAL")) {
       html +=
-        '<div class="linha"></div><div class="center bold">' + linha + "</div>";
+        '<div class="linha"></div><div class="center bold">' + linha +  "</div>";
       continue;
     }
 
