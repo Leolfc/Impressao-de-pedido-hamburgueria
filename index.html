@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Imprimir Pedido - SPACE BURGUER</title>
-<link rel="stylesheet" href="/styles/style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Imprimir Pedido - SPACE BURGUER</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>🧾 SPACE BURGUER</h2>
+      <textarea
+        id="mensagem"
+        placeholder="Cole aqui a mensagem do pedido do WhatsApp..."
+      ></textarea>
+      <button id="btnGerar">Gerar & Imprimir</button>
+    </div>
 
-<div class="container">
-  <h2>🧾 SPACE BURGUER</h2>
-  <textarea id="mensagem" placeholder="Cole aqui a mensagem do pedido do WhatsApp..."></textarea>
-  <button onclick="gerarCupom()">Gerar & Imprimir</button>
-</div>
-
-<div id="printArea"></div>
-<script src="scripts/script.js"></script>
-</body>
+    <div id="printArea"></div>
+    <script src="scripts/script.js"></script>
+    <script>
+      document.getElementById("btnGerar").addEventListener("click", gerarCupom);
+    </script>
+  </body>
 </html>
